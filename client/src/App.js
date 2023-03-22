@@ -52,17 +52,15 @@ function App({Route}) {
   
   }, 
   []);
-  console.log(data)
 
   if (!user) return <Login onLogin={setUser}/>;
 
   const trackRoute = data?.map((track) => {
     const trackEndPoint = track.name.replace(/\W+/g, '-').toLowerCase();
     const endPoint = "/tracks/" + trackEndPoint
-    console.log(endPoint)
     return <Route path={endPoint} key={track.id} element={<TrackListing track={track} user={user} posts={posts} setPosts={setPosts}/>} />
   })
-  console.log(trackRoute)
+
   function logout() {
     fetch("/logout", {method: "DELETE"})
     setUser(null)

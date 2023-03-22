@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react"
 import { Link, Route, Routes } from "react-router-dom"
-
+import { useFetchTrackQuery } from "../components/features/trackSlice";
+import TrackListing from "../components/TrackListing";
 
 function Tracklist({user, faveTracks, setFaveTracks}){
-    const [trackArr, setTrackArr] = useState([])
-    useEffect(() => {
-        fetch('/tracks')
-        .then((r) => r.json())
-        .then((tracks) => setTrackArr(tracks))
-    }, [])
+    // const [trackArr, setTrackArr] = useState([])
+    const { data: trackArr = [] } = useFetchTrackQuery()
+    // useEffect(() => {
+    //     fetch('/tracks')
+    //     .then((r) => r.json())
+    //     .then((tracks) => setTrackArr(tracks))
+    // }, [])
 
     function handleClick(id){
         if(faveTracks?.map((fave) => fave.racetrack.id !== id).includes(false) === false){

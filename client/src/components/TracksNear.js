@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react"
-import ReactMapGl from 'react-map-gl'
-// import 'mapbox-gl/dist/mapbox-gl.css'
+import Map, { Marker } from "react-map-gl"
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 function TracksNear({trackArr}){
     const [zipCode, setZipCode] = useState("")
     const [coordinates, setCoordinates] = useState({})
     const [trackCoorArr, setTrackCoorArr] = useState([])
-    const [viewport, setViewport] = useState({
-      lat: 70,
-      lng: 40,
-      zoom: 8
-    })
+    const [viewport, setViewport] = useState(null)
 
 
-    const tracksSearch = trackArr?.map((track) => {
-        return track.name.replace(/\W+/g, '%20').toLowerCase()
-    })
+    // const tracksSearch = trackArr?.map((track) => {
+    //     return track.name.replace(/\W+/g, '%20').toLowerCase()
+    // })
 
     // mapboxgl.accessToken = 'pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZodTdheGgwYWEzM3FsajljaHJobHNiIn0.ICfZrAzQIqA6N_OY9KQTdg';
     //   const map = new mapboxgl.Map({
@@ -52,21 +48,26 @@ function TracksNear({trackArr}){
             .then(function(data) {
               const coord = data.features[0].geometry.coordinates
               setViewport({...viewport,
-              latitude: coord[0],
-              longitude: coord[1]
+              latitude: coord[1],
+              longitude: coord[0],
+              zoom: 8
               });
             })
     }
-
+    console.log(viewport)
     return(
         <div>
             <label>Zipcode: </label>
             <input value={zipCode} onChange={(e) => setZipCode(e.target.value)} ></input>
             <button onClick={() => handleClick()}>Search</button>
-            <ReactMapGl 
-            mapboxAccessToken="pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZqMHNwdGgwOW83NDJvNzdjendienhwIn0.4-lCaBNDcdYYKqyXw1u54Q"
-            {...viewport} onViewPortChange={(newView) => setViewport(newView)}
-             ></ReactMapGl>
+            {viewport ? <Map
+              {...viewport}
+              style={{width: 800, height: 600}}
+              mapStyle="mapbox://styles/mapbox/streets-v9"
+              mapboxAccessToken='pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZqMHNwdGgwOW83NDJvNzdjendienhwIn0.4-lCaBNDcdYYKqyXw1u54Q'
+            >
+              <Marker {...viewport} />
+            </Map> : null}
         </div>
     )
 }

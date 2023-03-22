@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 
-function Post({post, postUser, user, posts, setPosts}){
+function Post({post, postUser, user, posts, setPosts, track}){
     
     const [newBody, setNewBody] = useState(post.body)
     const [edit, setEdit] = useState(false)
@@ -63,7 +63,8 @@ function Post({post, postUser, user, posts, setPosts}){
     }
 
     return(
-        <div key={post.id}>
+        <div>
+        { post.racetrack_id === track.id ? <div key={post.id}>
                 {postUser.id === user.id ? <button onClick={() => setEdit(!edit)}>{edit === true ? "X" : "Edit"}</button> : null}
                 <p>{postUser.username}: </p>
                 {edit ? <form onSubmit={(e) => handleSubmit(e)}>
@@ -71,7 +72,8 @@ function Post({post, postUser, user, posts, setPosts}){
                     <button type="submit">Change</button>
                     </form> : <p>{post.body}</p>}
                     <button onClick={() => handleClick()}>Likes: {postLikeCount}</button>
-            </div>
+            </div> : null}
+        </div>
     )
 }
 
