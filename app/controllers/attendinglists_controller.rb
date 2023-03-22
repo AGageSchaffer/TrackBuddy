@@ -1,0 +1,2 @@
+class AttendinglistsController < ApplicationController
+end
