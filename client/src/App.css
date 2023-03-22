@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.mapboxgl-marker {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border:1px solid gray;
+  background-color:lightblue;
+}
