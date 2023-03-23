@@ -65,8 +65,8 @@ function Post({post, postUser, user, posts, setPosts, track}){
     return(
         <div>
         { post.racetrack_id === track.id ? <div key={post.id}>
-                {postUser.id === user.id ? <button onClick={() => setEdit(!edit)}>{edit === true ? "X" : "Edit"}</button> : null}
                 <p>{postUser.username}: </p>
+                {postUser.id === user.id ? <button onClick={() => setEdit(!edit)}>{edit === true ? "X" : "Edit"}</button> : null}
                 {edit ? <form onSubmit={(e) => handleSubmit(e)}>
                     <input value={newBody} onChange={(e) => handleChange(e)}></input>
                     <button type="submit">Change</button>

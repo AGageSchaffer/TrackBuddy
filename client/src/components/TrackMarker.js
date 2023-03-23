@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { Link } from "react-router-dom";
 
 function TrackMarker({track, coordinates}){
     const [viewport, setViewport] = useState(null)
@@ -25,9 +26,11 @@ function TrackMarker({track, coordinates}){
             })
     }, [])
 
+    const endPoint = '/tracks/' + track.name.replace(/\W+/g, '-').toLowerCase();
+
     return(
         <>
-            {viewport ? <Marker {...viewport} color='blue' >{track.name}</Marker> : null }
+            {viewport ? <Popup {...viewport} color='blue' ><Link to={endPoint}>{track.name}</Link></Popup> : null }
         </>
     )
 }

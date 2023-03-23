@@ -14,6 +14,7 @@ import AddCar from "./components/AddCar";
 import TrackListing from "./components/TrackListing";
 import { useFetchUserQuery } from "./components/features/userSlice";
 import { useFetchTrackQuery } from "./components/features/trackSlice";
+import { useFetchPostQuery } from "./components/features/postSlice"
 
 function App({Route}) {
   const [user, setUser] = useState(null);
@@ -24,6 +25,9 @@ function App({Route}) {
   const [faveTracks, setFaveTracks] = useState([])
   // const {data = null} = useFetchUserQuery()
   const { data = [] } = useFetchTrackQuery()
+  const { data: postArr = [] } = useFetchPostQuery()
+
+  console.log(postArr)
 
   useEffect(() => {
     // auto-login
