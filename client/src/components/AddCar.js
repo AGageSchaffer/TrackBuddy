@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react"
-
+import React, { useState } from "react"
+import {Image} from 'cloudinary-react'
+import Axios from 'axios'
 
 function AddCar({edit, setEdit, initialForm, formData, setFormData, cars, setCars, setFormView}){
 
+    const [imageSelected, setImageSelected] = useState({})
+    const [carPhoto, setCarPhoto] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     
     function handleChange(e){
         const newFormData = {
@@ -11,7 +15,7 @@ function AddCar({edit, setEdit, initialForm, formData, setFormData, cars, setCar
         }
         setFormData(newFormData)
     }
-
+    
     function handleSubmit(e) {
         e.preventDefault()
         edit ? 
@@ -42,7 +46,23 @@ function AddCar({edit, setEdit, initialForm, formData, setFormData, cars, setCar
         setFormView(false)
         setFormData(initialForm)
     }
-
+    
+    function uploadImage(){
+        setIsLoading(true)
+        const carImg = new FormData()
+        carImg.append('file', imageSelected)
+        carImg.append('upload_preset', 'pdaxilgs')
+        
+        Axios.post("https://api.cloudinary.com/v1_1/dltl186jg/image/upload",
+        carImg
+        ).then((r) => {
+            setIsLoading(false)
+            setCarPhoto(r.data.secure_url)
+            const newForm = {...formData, photo_src: r.data.secure_url}
+            setFormData(newForm)
+        })
+    }
+    
     return(
         <form onSubmit={(e) => handleSubmit(e)}>
             <h2>Add Car</h2>
@@ -58,8 +78,10 @@ function AddCar({edit, setEdit, initialForm, formData, setFormData, cars, setCar
             <input name='transmission' value={formData.transmission} onChange={(e) => handleChange(e)}></input>
             <label>Mod List: </label>
             <input name='mod_list' value={formData.mod_list} onChange={(e) => handleChange(e)}></input>
-            <label>Photo URL: </label>
-            <input name='photo_src' value={formData.photo_src} onChange={(e) => handleChange(e)}></input>
+            <label>Photo: </label>
+            {carPhoto === '' ? <><input type='file' onChange={(e) => setImageSelected(e.target.files[0])}></input>
+            <button onClick={uploadImage} type='button' >{isLoading ? 'uploading...' : 'Upload Image'}</button></> : <Image style={{width: 200}} cloudName='dltl186jg' publicId={carPhoto} />
+        }
             <button type="submit">Add Car</button>
         </form>
     )

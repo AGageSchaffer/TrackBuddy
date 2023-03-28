@@ -16,10 +16,45 @@ const postSlice = createApi({
                 },
                 providesTags: ['posts']
             }),
+            createPost: builder.mutation({
+                query: ({...post}) => ({
+                    url: 'posts',
+                    method: "POST",
+                    body: post
+                    }),
+                    async onQueryStarted(_, {dispatch, queryFulfilled}) {
+                        try {
+                            await queryFulfilled
+                            dispatch(postSlice.util.updateQueryData())
+                        } catch {
+                            dispatch(postSlice.util.invalidateTags(['posts']))
+                        }
+                    
+                }
+                
+            }),
+            createPostTimescore: builder.mutation({
+                query({...post}){
+                    return {url: 'timescores',
+                    method: "POST",
+                    body: post
+                    }
+                },
+                invalidatesTags: ['posts']
+            }),
+            updatePost: builder.mutation({
+                query({...post}){
+                    return {url: 'posts',
+                    method: "PATCH",
+                    body: post
+                    }
+                },
+                invalidatesTags: ['posts']
+            })
         }
     }
 })
 
 export default postSlice
 
-export const { useFetchPostQuery } = postSlice
+export const { useFetchPostQuery, useCreatePostMutation, useUpdatePostMutation, useCreatePostTimescoreMutation } = postSlice

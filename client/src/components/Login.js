@@ -2,14 +2,14 @@ import { useState } from "react";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
-function Login({ onLogin }) {
+function Login({ onLogin, fetchUsersData }) {
   const [showLogin, setShowLogin] = useState(true);
 
   return (
     <div>
       {showLogin ? (
         <>
-          <LoginForm onLogin={onLogin} />
+          <LoginForm onLogin={onLogin} fetchUsersData={fetchUsersData} />
           <p>
             Don't have an account? &nbsp;
             <button color="secondary" onClick={() => setShowLogin(false)}>

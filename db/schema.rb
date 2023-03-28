@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2023_03_17_154211) do
 
   create_table "timescores", force: :cascade do |t|
     t.integer "post_id"
-    t.decimal "time"
+    t.string "time"
     t.string "timeOfDay"
     t.date "date"
     t.integer "temperature"

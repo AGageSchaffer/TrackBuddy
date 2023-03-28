@@ -2,25 +2,31 @@ import React, { useState } from "react"
 import TimeScoreForm from "./TimeScoreForm"
 
 
-function PostForm({track, user, posts, setPosts}){
+function PostForm({track, user, timescoreArr, setTimescoreArr, posts, setPosts}){
     const initialForm = {
         user_id: user.id,
         racetrack_id: track.id,
         body: ""
     }
 
+    const timeform = {
+        minute: "",
+        second: "",
+        millisecond: ""
+    }
+    
     const initialTimeScoreForm = {
         time: "",
-        timeofday: "",
+        timeOfDay: "",
         date: "",
         temperature: "",
         weather: "",
         conditions: ""
     }
-
+    
+    const [timeforms, setTimeForm] = useState(timeform)
     const [formData, setFormData] = useState(initialForm)
     const [timeScoreForm, setTimeScoreForm] = useState(false)
-    const [timeScoreFormData, setTimeScoreFormData] = useState(initialTimeScoreForm)
 
     function handleChange(e){
         const newFormData = {
@@ -30,9 +36,44 @@ function PostForm({track, user, posts, setPosts}){
         setFormData(newFormData)
     }
 
+    function postTimescore(timescore){
+        fetch("/timescores", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(timescore)
+        }).then((r) => {
+            if (r.ok) {
+                r.json().then((timescore) => setTimescoreArr([...timescoreArr, timescore]))
+            }
+        })
+    }
+
+    function createTimescore(timescore){
+        fetch("/posts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        }).then((r) => {
+            if (r.ok) {
+                r.json().then((post) => {
+                    setPosts([...posts, post])
+                    postTimescore({...timescore, post_id: post.id})
+                })
+            }
+        })
+    }
+    
     function handleSubmit(e) {
         e.preventDefault()
-        fetch("/posts", {
+        const timescore = {
+            ...timeScoreForm, time: timeforms.minute + ':' + timeforms.second + '.' + timeforms.millisecond
+        }
+
+        timeScoreForm ? createTimescore(timescore) : fetch("/posts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -50,7 +91,7 @@ function PostForm({track, user, posts, setPosts}){
         <form onSubmit={handleSubmit}>
             <label>Body: </label>
             <input name='body' value={formData.body} onChange={(e) => handleChange(e)}></input>
-            {timeScoreForm ? <TimeScoreForm timeScoreFormData={timeScoreFormData} setTimeScoreFormData={setTimeScoreFormData} /> : <button onClick={() => setTimeScoreForm(true)}>Add Timescore</button>}
+            {timeScoreForm ? <TimeScoreForm timeScoreFormData={timeScoreForm} setTimeScoreFormData={setTimeScoreForm} initialTimeScoreForm={initialTimeScoreForm} timeforms={timeforms} setTimeForm={setTimeForm} /> : <button onClick={() => {setTimeScoreForm(true); setTimeScoreForm(initialTimeScoreForm)}}>Add Timescore</button>}
             <button type="submit">Submit</button>
         </form>
     )

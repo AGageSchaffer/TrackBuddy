@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get "/posts", to: "posts#index"
   post "/posts", to: "posts#create"
   patch "/posts", to: "posts#update"
+  delete "/posts", to: "posts#destroy"
 
   get "/likes", to: "likes#index"
   post "/likes", to: "likes#create"
@@ -37,6 +38,16 @@ Rails.application.routes.draw do
   get "/favorites", to: "favorites#index"
   post "/favorites", to: "favorites#create"
   delete "/favorites", to: "favorites#destroy"
+
+  get "/friends", to: "friends#index"
+  get "/friends", to: "friends#create"
+  get "/friends", to: "friends#destroy"
+
+  get "/timescores", to: "timescores#index"
+  post "/timescores", to: "timescores#create"
+  delete "/timescores", to: "timescores#destroy"
+
+  get "/others", to: "users#index"
 
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
-import { Link, Route, Routes } from "react-router-dom"
+import React from "react"
+import { Link } from "react-router-dom"
 import { useFetchTrackQuery } from "../components/features/trackSlice";
-import TrackListing from "../components/TrackListing";
+
 
 function Tracklist({user, faveTracks, setFaveTracks}){
     // const [trackArr, setTrackArr] = useState([])

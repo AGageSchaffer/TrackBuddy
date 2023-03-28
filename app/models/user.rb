@@ -5,7 +5,10 @@ class User < ApplicationRecord
     has_many :messages
     has_many :posts
     has_many :likes
-    has_many :friends, foreign_key: :friendee_id, class_name: "Friend"
+    has_many :friends, foreign_key: :friendee_id
+    has_many :frienders, through: :friends
+    has_many :friends, foreign_key: :friender_id
+    has_many :friendees, through: :friends
     has_many :racecars
     has_many :events, through: :attendinglists
     has_many :timescores, through: :posts

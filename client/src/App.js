@@ -10,24 +10,22 @@ import FriendsList from "./components/FriendsList";
 import Tracks from "./components/Tracks";
 import FavoriteTracks from "./components/FavoriteTracks";
 import TracksNear from "./components/TracksNear";
-import AddCar from "./components/AddCar";
 import TrackListing from "./components/TrackListing";
-import { useFetchUserQuery } from "./components/features/userSlice";
 import { useFetchTrackQuery } from "./components/features/trackSlice";
-import { useFetchPostQuery } from "./components/features/postSlice"
+import { useFetchOthersQuery } from "./components/features/othersSlice";
+import OtherProfiles from "./components/OtherProfiles";
 
 function App({Route}) {
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [cars, setCars] = useState([])
+  const [timeScoreArr, setTimeScoreArr] = useState([])
   // const [trackArr, setTrackArr] = useState([])
   const [posts, setPosts] = useState([])
   const [faveTracks, setFaveTracks] = useState([])
-  // const {data = null} = useFetchUserQuery()
   const { data = [] } = useFetchTrackQuery()
-  const { data: postArr = [] } = useFetchPostQuery()
+  const { data: users = [] } = useFetchOthersQuery()
 
-  console.log(postArr)
 
   useEffect(() => {
     // auto-login
@@ -42,9 +40,9 @@ function App({Route}) {
         r.json().then((racecars) => setCars(racecars));
       }
     });
-    // fetch('/tracks')
-    //     .then((r) => r.json())
-    //     .then((tracks) => setTrackArr(tracks))
+    fetch('/timescores')
+        .then((r) => r.json())
+        .then((timescores) => setTimeScoreArr(timescores))
       fetch('/favorites')
         .then((r) => r.json())
         .then((tracks) => setFaveTracks(tracks))
@@ -57,16 +55,34 @@ function App({Route}) {
   }, 
   []);
 
-  if (!user) return <Login onLogin={setUser}/>;
+  function fetchUsersData() {
+    fetch('/favorites')
+        .then((r) => r.json())
+        .then((tracks) => setFaveTracks(tracks))
+    fetch("/racecars").then((r) => {
+          if (r.ok) {
+            r.json().then((racecars) => setCars(racecars));
+          }
+        })
+  }
+
+  if (!user) return <Login onLogin={setUser} fetchUsersData={fetchUsersData} />
 
   const trackRoute = data?.map((track) => {
     const trackEndPoint = track.name.replace(/\W+/g, '-').toLowerCase();
     const endPoint = "/tracks/" + trackEndPoint
-    return <Route path={endPoint} key={track.id} element={<TrackListing track={track} user={user} posts={posts} setPosts={setPosts}/>} />
+    return <Route path={endPoint} key={track.id} element={<TrackListing track={track} posts={posts} setPosts={setPosts} user={user} timescores={timeScoreArr} setTimeScoreArr={setTimeScoreArr} />} />
   })
 
+  const usersRoute = users?.map((other) => {
+    const endpoint = "/" + other.username.toLowerCase()
+    return other.id === user.id ? null : <Route path={endpoint} key={other.id} element={<OtherProfiles {...other} />} />
+  })
+  
   function logout() {
     fetch("/logout", {method: "DELETE"})
+    setCars([])
+    setFaveTracks([])
     setUser(null)
     setOpen(false)
   }
@@ -79,7 +95,7 @@ function App({Route}) {
           <div>
             <div>
               <Link to='/'>
-                <img src={Logo}></img>
+                <img src={Logo} alt='logo' ></img>
               </Link>
               <button onClick={dropdown}>{user.username}</button>
               {open ? 
@@ -88,7 +104,9 @@ function App({Route}) {
                   <button>Profile</button>
                 </Link>
                 <>
-                  <button onClick={logout}>Logout</button>
+                  <Link to='/' >
+                    <button onClick={logout}>Logout</button>
+                  </Link>
                 </>
               </ul> : null}
                
@@ -108,13 +126,14 @@ function App({Route}) {
               </Link>
             </div>
           <Routes>
-              <Route path='/' element={<Main />} />
+              <Route path='/' element={<Main timescores={timeScoreArr} posts={posts} />} />
               <Route path='/profile' element={<Profile user={user} cars={cars} setCars={setCars}/>} />
               <Route path='/friends' element={<FriendsList />} />
-              <Route path='/tracks/*' element={<Tracks user={user} faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
+              <Route path='/tracks/*' element={<Tracks timescores={timeScoreArr} setTimeScoreArr={setTimeScoreArr} user={user} faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
               <Route path='/favorite-tracks' element={<FavoriteTracks faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
               <Route path='/find-tracks' element={<TracksNear track={data} />} />
               {trackRoute}
+              {usersRoute}
           </Routes>
           </div>
   );

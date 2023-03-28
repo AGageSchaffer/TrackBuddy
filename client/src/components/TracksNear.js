@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react"
-import Map, { Marker } from "react-map-gl"
+import React, { useState } from "react"
+import Map from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
-import trackSlice from "./features/trackSlice";
 import { useFetchTrackQuery } from "./features/trackSlice";
 import TrackMarker from "./TrackMarker";
 
-function TracksNear({}){
+function TracksNear(){
     const [zipCode, setZipCode] = useState("")
     const [coordinates, setCoordinates] = useState({})
-    const [trackCoorArr, setTrackCoorArr] = useState([])
     const [viewport, setViewport] = useState(null)
     const { data: trackArr = [] } = useFetchTrackQuery()
 

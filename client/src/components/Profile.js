@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
 import AddCar from "./AddCar";
+import { Image } from "cloudinary-react";
 
 function Profile({user, cars, setCars}){
     const [edit, setEdit] = useState(false)
@@ -34,7 +34,7 @@ function Profile({user, cars, setCars}){
 
     const carlist = cars.map((car) => {
         return <ul key={car.id}>
-            <li><button onClick={() => deleteCar(car.id)}>x</button><button onClick={() => editCar(car)}>Edit</button>{car.year} {car.make} {car.model} {car.trim} {car.transmission} - {car.mod_list}</li>
+            <li><button onClick={() => deleteCar(car.id)}>x</button><button onClick={() => editCar(car)}>Edit</button><Image style={{width: 100}} cloudName='dltl186jg' publicId={car.photo_src} />{car.year} {car.make} {car.model} {car.trim} {car.transmission} - {car.mod_list}</li>
         </ul>
     })
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Map, { Marker, Popup } from "react-map-gl"
+import { Popup } from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Link } from "react-router-dom";
 
-function TrackMarker({track, coordinates}){
+function TrackMarker({track}){
     const [viewport, setViewport] = useState(null)
 
     const trackAddress = track.address.replace(/\W+/g, '%20').toLowerCase() + '%20' + track.city + '%20' + track.state

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { usePostLoginMutation } from "./features/userSlice";
 
-function LoginForm({ onLogin }) {
+function LoginForm({ onLogin, fetchUsersData }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
@@ -21,7 +19,7 @@ function LoginForm({ onLogin }) {
     }).then((r) => {
       setIsLoading(false);
       if (r.ok) {
-        r.json().then((user) => onLogin(user));
+        r.json().then((user) => onLogin(user)).then(fetchUsersData)
       } else {
         r.json().then((err) => setErrors(err.errors));
       }

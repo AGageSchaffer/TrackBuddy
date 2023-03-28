@@ -1,8 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom";
-
+import { useFetchFavoritesQuery } from "./features/favoritesSlice";
 
 function FavoriteTracks({faveTracks, setFaveTracks}){
+
+    const { data } = useFetchFavoritesQuery()
 
     function handleClick(id){
         const removeFavorite = faveTracks.filter(track => track.id !== id)
@@ -10,9 +12,8 @@ function FavoriteTracks({faveTracks, setFaveTracks}){
         fetch(`/favorites/${id}`, {method: "DELETE"})
         
     }
-
     
-    const tracks = faveTracks.map((fave) => {
+    const tracks = faveTracks?.map((fave) => {
         const endPoint = '/tracks/' + fave.racetrack.name.replace(/\W+/g, '-').toLowerCase();
         
         return <div key={fave.racetrack.id}>
