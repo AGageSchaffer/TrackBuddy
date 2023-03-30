@@ -3,6 +3,7 @@ import Map from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useFetchTrackQuery } from "./features/trackSlice";
 import TrackMarker from "./TrackMarker";
+import { MBAccessToken } from "../apicode";
 
 function TracksNear(){
     const [zipCode, setZipCode] = useState("")
@@ -11,39 +12,12 @@ function TracksNear(){
     const { data: trackArr = [] } = useFetchTrackQuery()
 
 
-    // const tracksSearch = trackArr?.map((track) => {
-    //     return track.name.replace(/\W+/g, '%20').toLowerCase()
-    // })
-
-    // mapboxgl.accessToken = 'pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZodTdheGgwYWEzM3FsajljaHJobHNiIn0.ICfZrAzQIqA6N_OY9KQTdg';
-    //   const map = new mapboxgl.Map({
-    //   container: 'map', // container ID
-    //   style: 'mapbox://styles/mapbox/streets-v12', // style URL
-    //   center: [coordinates], // starting position [lng, lat]
-    //   zoom: 9, // starting zoom
-    //   });
-
-    // const trackCoord = tracksSearch.map((track) => {
-    //     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${track}.json?access_token=pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZodTdheGgwYWEzM3FsajljaHJobHNiIn0.ICfZrAzQIqA6N_OY9KQTdg`, {
-    //         method: "GET",
-    //         withCredentials: true,
-    //         headers: {
-    //           "Content-Type": "application/json"
-    //         }
-    //       })
-    //         .then(resp => resp.json())
-    //         .then((data) => {return data.features[0].geometry.coordinates}
-    //         )
-    //     })
-
-    //     console.log(trackCoord)
-    
     const trackMarkers = trackArr?.map((track) => {
       return <TrackMarker key={track.id} track={track} coordinates={coordinates} />
     })
 
     function handleClick(){
-        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${zipCode}.json?access_token=pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZodTdheGgwYWEzM3FsajljaHJobHNiIn0.ICfZrAzQIqA6N_OY9KQTdg`, {
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${zipCode}.json?access_token=${MBAccessToken}`, {
             method: "GET",
             withCredentials: true,
             headers: {
@@ -79,7 +53,7 @@ function TracksNear(){
               {...viewport}
               style={{width: 800, height: 600}}
               mapStyle="mapbox://styles/mapbox/streets-v9"
-              mapboxAccessToken='pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZqMHNwdGgwOW83NDJvNzdjendienhwIn0.4-lCaBNDcdYYKqyXw1u54Q'
+              mapboxAccessToken={MBAccessToken}
             >
               {trackMarkers}
             </Map> : null}

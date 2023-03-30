@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Popup } from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Link } from "react-router-dom";
+import { MBAccessToken } from "../apicode";
 
 function TrackMarker({track}){
     const [viewport, setViewport] = useState(null)
 
     const trackAddress = track.address.replace(/\W+/g, '%20').toLowerCase() + '%20' + track.city + '%20' + track.state
     useEffect(() => {
-        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${trackAddress}.json?access_token=pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZodTdheGgwYWEzM3FsajljaHJobHNiIn0.ICfZrAzQIqA6N_OY9KQTdg`, {
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${trackAddress}.json?access_token=${MBAccessToken}`, {
             method: "GET",
             withCredentials: true,
             headers: {

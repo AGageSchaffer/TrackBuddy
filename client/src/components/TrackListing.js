@@ -4,7 +4,7 @@ import Posts from "./Posts"
 import Map, { Marker } from "react-map-gl"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Leaderboard from "./Leaderboard";
-
+import { MBAccessToken } from "../apicode";
 
 
 function TrackListing({track, user, timescores, setTimeScoreArr, posts, setPosts}){
@@ -13,7 +13,7 @@ function TrackListing({track, user, timescores, setTimeScoreArr, posts, setPosts
 
     const trackAddress = track.address.replace(/\W+/g, '%20').toLowerCase() + '%20' + track.city + '%20' + track.state
     useEffect(() => {
-        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${trackAddress}.json?access_token=pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZodTdheGgwYWEzM3FsajljaHJobHNiIn0.ICfZrAzQIqA6N_OY9KQTdg`, {
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${trackAddress}.json?access_token=${MBAccessToken}`, {
             method: "GET",
             withCredentials: true,
             headers: {
@@ -47,7 +47,7 @@ function TrackListing({track, user, timescores, setTimeScoreArr, posts, setPosts
                       {...viewport}
                       
                       mapStyle="mapbox://styles/mapbox/streets-v9"
-                      mapboxAccessToken='pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZqMHNwdGgwOW83NDJvNzdjendienhwIn0.4-lCaBNDcdYYKqyXw1u54Q'
+                      mapboxAccessToken={MBAccessToken}
                     >
                       <Marker {...viewport} />
                     </Map> : null}

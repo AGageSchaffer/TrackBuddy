@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Generic from "../images/Generic.jpg"
 function UserProfile({user, loggedUser, friendArr, setFriendArr}){
     
-    const isFriend = friendArr.map(friend => friend.friender.id === user.id).includes(true)
+    const isFriend = friendArr?.map(friend => friend.friender.id === user.id).includes(true)
 
     function handleClick() {
         if (isFriend === false){
