@@ -9,6 +9,7 @@ Currently this project hasn't been deployed and must be run locally. To run it:
 <li>Fork and Clone the repo then open with a code editor.</li>
 <li>Bundle Install on the server side terminal</li>
 <li>npm i --prefix client on the client side terminal</li>
+<li>API key for Mapbox has been removed. Access the apicode.js file and replace the code with your own to have mapbox features.</li>
 <li>rails db:migrate db:seed</li>
 <li>rails s</li>
 <li>npm start</li>
