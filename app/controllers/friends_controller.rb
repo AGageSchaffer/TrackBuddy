@@ -5,19 +5,19 @@ class FriendsController < ApplicationController
     end
 
     def create 
-        post = Post.create!(post_params)
-        render json: post, status: :created
+        friend = Friend.create!(friend_params)
+        render json: friend, status: :created
     end
 
     def destroy 
-        friend = Friend.all.find_by(id: post_params[:id])
+        friend = Friend.all.find_by(id: friend_params[:id])
         friend.destroy
         head :no_content
     end
 
     private
 
-    def post_params
+    def friend_params
         params.permit(:id, :friendee_id, :friender_id)
     end
 

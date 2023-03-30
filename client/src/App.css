@@ -33,3 +33,44 @@
   margin: 0%;
   border: 0%;
 }
+
+.ui.secondary.menu {
+  display: flex;
+  justify-content: center;
+}
+
+#zip-search {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  max-width: 30%;
+}
+
+#near-map {
+  position: relative;
+  margin: 0 auto;
+}
+
+#car-photo {
+  max-height: 117px;
+  
+}
+
+#track-map {
+  min-width: 400;
+  min-height: 300;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+}
+
+body > .grid {
+	height: 100%;
+}
+
+#column {
+	max-width: 360px;
+}
+

@@ -40,18 +40,24 @@ function Tracklist({user, faveTracks, setFaveTracks}){
     
     const tracks = trackArr?.map((track) => {
         const endPoint = track.name.replace(/\W+/g, '-').toLowerCase();
-        return <div key={track.id}>
+        return <div key={track.id} className="card" >
             <Link to={endPoint}>
-                <h3>{track.name}</h3>
+                <div className="center aligned header">{track.name}</div>
             </Link>
-            <button onClick={() => handleClick(track.id)}>{faveTracks?.map((fave) => fave.racetrack.id === track.id).includes(true) ? "Unfavorite" : "Favorite"}</button>
-            <p>{track.address}, {track.city}, {track.state}</p>
-            <p>Length: {track.length} {track.length < 1 ? "Mile" : "Miles"}</p>
+            <div className="center aligned meta">Length: {track.length} {track.length < 1 ? "Mile" : "Miles"}</div>
+            <div className="center aligned description">{track.address}, {track.city}, {track.state}</div>
+            <button className="ui bottom attached button" onClick={() => handleClick(track.id)}>{faveTracks?.map((fave) => fave.racetrack.id === track.id).includes(true) ? "Unfavorite" : "Favorite"}</button>
             </div>})
 
     return(
-        <div>
-            {tracks}
+        <div className="ui grid">        
+            <div className="five wide column"></div>
+            <div className="six wide column">
+                <div className="ui centered cards">
+                    {tracks}
+                </div>
+            </div>
+            <div className="five wide column"></div>
         </div>
     )
 }

@@ -36,25 +36,33 @@ function TrackListing({track, user, timescores, setTimeScoreArr, posts, setPosts
     }
 
     return(
-        <div>
-          <h1>{track.name}</h1>
-          <p>Track Type: {track.style}</p>
-          <p>{track.address}, {track.city}, {track.state}</p>
-          <p>Length: {track.length} {track.length < 1 ? "Mile" : "Miles"}</p>
-          {viewport ? <Map
-                {...viewport}
-                style={{width: 800, height: 600}}
-                mapStyle="mapbox://styles/mapbox/streets-v9"
-                mapboxAccessToken='pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZqMHNwdGgwOW83NDJvNzdjendienhwIn0.4-lCaBNDcdYYKqyXw1u54Q'
-              >
-                <Marker {...viewport} />
-              </Map> : null}
-          <h3>Posts</h3>
-          <Posts user={user} track={track} timescores={timescores} setTimeScoreArr={setTimeScoreArr} posts={posts} setPosts={setPosts} />
-          {showForm ? <PostForm track={track} user={user} timescoreArr={timescores} setTimescoreArr={setTimeScoreArr} posts={posts} setPosts={setPosts} /> : 
-          <button onClick={() => revealPost()}>Create Post</button>}
-          <h3>LeaderBoard</h3>
-          <Leaderboard timescores={filteredTimescores} />
+        <div className="ui grid">
+          <div className="one wide column"></div>
+          <div className="six wide column">
+                  <div className="ui huge centered header">{track.name}</div>
+                  <div className="ui small centered header">{track.style}</div>
+                  <div className="ui tiny centered header">{track.address}, {track.city}, {track.state}</div>
+                  <div className="ui medium centered header">{track.length} {track.length < 1 ? "Mile" : "Miles"}</div>
+                {viewport ? <Map id="track-map"
+                      {...viewport}
+                      
+                      mapStyle="mapbox://styles/mapbox/streets-v9"
+                      mapboxAccessToken='pk.eyJ1IjoiYWdzY2hhZmZlciIsImEiOiJjbGZqMHNwdGgwOW83NDJvNzdjendienhwIn0.4-lCaBNDcdYYKqyXw1u54Q'
+                    >
+                      <Marker {...viewport} />
+                    </Map> : null}
+          </div>
+          <div className="three wide column">
+            <div className="ui huge centered header">LeaderBoard</div>
+              <Leaderboard timescores={filteredTimescores} />
+          </div>
+          <div className="five wide column">
+          <div className="ui huge centered header">Posts</div>
+            <Posts user={user} track={track} timescores={timescores} setTimeScoreArr={setTimeScoreArr} posts={posts} setPosts={setPosts} />
+            {showForm ? <PostForm setShowForm={setShowForm} track={track} user={user} timescoreArr={timescores} setTimescoreArr={setTimeScoreArr} posts={posts} setPosts={setPosts} /> : 
+            <button onClick={() => revealPost()} className="ui button">Create Post</button>}
+          </div>
+          <div className="one wide column"></div>
         </div>
     )
 }

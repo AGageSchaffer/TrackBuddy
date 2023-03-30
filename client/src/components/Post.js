@@ -78,28 +78,31 @@ function Post({post, postUser, user, posts, setPosts, track, timescores, setTime
     }
     const endpoint = '/' + postUser.username.toLowerCase()
     return(
-        <div>
-        { post.racetrack_id === track.id ? <div key={post.id}>
+        <div className="item">
+        { post.racetrack_id === track.id ? <div key={post.id} className="content">
                 <Link to={endpoint}>
-                    <h5>{postUser.username}: </h5>
+                    <div className="header">{postUser.username}</div>
                 </Link>
-                {timescore ? <p>Best Lap: {timescore.time} on {timescore.date}</p> : null}
-                {timescore ? <button onClick={() => setMoreInfo(!moreInfo)}>{moreInfo ? "Hide Info" : "More Info"}</button> : null}
-                {postUser.id === user.id ? <button onClick={() => setEdit(!edit)}>{edit === true ? "Cancel" : "Edit"}</button> : null}
-                {postUser.id === user.id ? <button onClick={() => deletePost(post.id, timescore?.id)}>X</button> : null}
-                {moreInfo ? <ul>
+                {timescore ? <><div className="center aligned description">{timescore.time}</div>
+                <div className="center aligned meta">{timescore.date}</div></> : null}
+                {edit ? <form onSubmit={(e) => handleSubmit(e)} className="ui form">
+                    <input value={newBody} onChange={(e) => handleChange(e)}></input>
+                    <button type="submit" className="ui button">Change</button>
+                    </form> : <div className="center aligned description">{post.body}</div>}
+                    <button onClick={() => handleClick()} className="ui label">Likes: {postLikeCount}</button>
+            </div> : null}
+            <div className="extra">
+                {timescore ? <button onClick={() => setMoreInfo(!moreInfo)} className="ui label">{moreInfo ? "Hide Info" : "More Info"}</button> : null}
+                {postUser.id === user.id ? <button onClick={() => setEdit(!edit)} className="ui label">{edit === true ? "Cancel" : "Edit"}</button> : null}
+                {postUser.id === user.id ? <button onClick={() => deletePost(post.id, timescore?.id)} className="ui label">X</button> : null}
+                {moreInfo ? <div className="extra content">
                     <li>Time Of Day: {timescore.timeOfDay}</li>
                     <li>Temp(f): {timescore.temperature}</li>
                     <li>Weather: {timescore.weather}</li>
                     <li>Track Conditions: {timescore.conditions}</li>
                     <li>Car: </li>
-                </ul> : null}
-                {edit ? <form onSubmit={(e) => handleSubmit(e)}>
-                    <input value={newBody} onChange={(e) => handleChange(e)}></input>
-                    <button type="submit">Change</button>
-                    </form> : <p>{post.body}</p>}
-                    <button onClick={() => handleClick()}>Likes: {postLikeCount}</button>
-            </div> : null}
+                </div> : null}
+            </div>
         </div>
     )
 }

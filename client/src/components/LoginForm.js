@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Logo from "../images/Logo.png"
 
 function LoginForm({ onLogin, fetchUsersData }) {
   const [username, setUsername] = useState("");
@@ -29,7 +30,12 @@ function LoginForm({ onLogin, fetchUsersData }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+      <div className="ui segment">
+        <form onSubmit={handleSubmit} className="ui form">
+        <img src={Logo} />
+        <div className="ui large header">Log In</div>
+        <div className="ui center aligned basic segment">
+          <div className="ui form">
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -46,10 +52,16 @@ function LoginForm({ onLogin, fetchUsersData }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-          <button variant="fill" color="primary" type="submit">
+
+          </div>
+
+        </div>
+
+          <button variant="fill" color="primary" type="submit" className="ui primary fluid button">
             {isLoading ? "Loading..." : "Login"}
           </button>
-    </form>
+        </form>
+      </div>
   );
 }
 

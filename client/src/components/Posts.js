@@ -11,8 +11,8 @@ function Posts({ user, track, timescores, setTimeScoreArr, posts, setPosts}){
         return <Post key={post.id} track={track} post={post} posts={posts} setPosts={setPosts} postUser={postUser} user={user} timescores={timescores} setTimeScoreArr={setTimeScoreArr} />
     })
     return(
-        <div>
-        {postlist}
+        <div className="ui centered divided items">
+            {postlist}
         </div>
     )
 }

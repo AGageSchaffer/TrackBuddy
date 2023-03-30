@@ -6,28 +6,41 @@ function Login({ onLogin, fetchUsersData }) {
   const [showLogin, setShowLogin] = useState(true);
 
   return (
-    <div>
-      {showLogin ? (
-        <>
-          <LoginForm onLogin={onLogin} fetchUsersData={fetchUsersData} />
-          <p>
-            Don't have an account? &nbsp;
-            <button color="secondary" onClick={() => setShowLogin(false)}>
-              Sign Up
-            </button>
-          </p>
-        </>
-      ) : (
-        <>
-          <SignUpForm onLogin={onLogin} />
-          <p>
-            Already have an account? &nbsp;
-            <button color="secondary" onClick={() => setShowLogin(true)}>
-              Log In
-            </button>
-          </p>
-        </>
-      )}
+    <div className="ui center aligned grid">
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+      <div className="row"></div>
+        <div className="ui center aligned grid">
+
+        {showLogin ? (
+          <div className="column" id="column">
+            <LoginForm onLogin={onLogin} fetchUsersData={fetchUsersData} />
+            
+            <div className="ui segment">
+              Don't have an account? &nbsp;
+              <button color="secondary" onClick={() => setShowLogin(false)} className="ui button">
+                Sign Up
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="column">
+            <SignUpForm onLogin={onLogin} />
+            <div className="ui segment">
+              Already have an account? &nbsp;
+              <button color="secondary" onClick={() => setShowLogin(true)} className="ui button">
+                Log In
+              </button>
+            </div>
+          </div>
+        )}  
+        </div>
     </div>
   );
 }

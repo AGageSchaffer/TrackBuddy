@@ -25,6 +25,7 @@ function App({Route}) {
   const [faveTracks, setFaveTracks] = useState([])
   const { data = [] } = useFetchTrackQuery()
   const { data: users = [] } = useFetchOthersQuery()
+  const [friendArr, setFriendArr] = useState([])
 
 
   useEffect(() => {
@@ -34,7 +35,11 @@ function App({Route}) {
         r.json().then((user) => setUser(user));
       }
     });
+    fetch("/friends")
+    .then((r) => r.json())
+    .then(friends => setFriendArr(friends))
     
+   
     fetch("/racecars").then((r) => {
       if (r.ok) {
         r.json().then((racecars) => setCars(racecars));
@@ -56,6 +61,10 @@ function App({Route}) {
   []);
 
   function fetchUsersData() {
+    fetch("/friends")
+    .then((r) => r.json())
+    .then(friends => setFriendArr(friends))
+    
     fetch('/favorites')
         .then((r) => r.json())
         .then((tracks) => setFaveTracks(tracks))
@@ -76,7 +85,7 @@ function App({Route}) {
 
   const usersRoute = users?.map((other) => {
     const endpoint = "/" + other.username.toLowerCase()
-    return other.id === user.id ? null : <Route path={endpoint} key={other.id} element={<OtherProfiles {...other} />} />
+    return other.id === user.id ? null : <Route path={endpoint} key={other.id} element={<Profile user={other} cars={other.racecars} loggedUser={user} friendArr={friendArr} setFriendArr={setFriendArr} />} />
   })
   
   function logout() {
@@ -93,48 +102,58 @@ function App({Route}) {
 
   return (
           <div>
-            <div>
-              <Link to='/'>
-                <img src={Logo} alt='logo' ></img>
-              </Link>
-              <button onClick={dropdown}>{user.username}</button>
-              {open ? 
-              <ul>
-                <Link to='/profile'>
-                  <button>Profile</button>
+            <div class="ui grid">            
+              <div class="eight wide column">
+
+                <Link to='/'>
+                  <img src={Logo} alt='logo' ></img>
                 </Link>
-                <>
-                  <Link to='/' >
-                    <button onClick={logout}>Logout</button>
+              </div>
+              <div class="eight wide column">
+              <div class="ui right floated basic segment">
+                <a className="ui yellow label" onClick={dropdown}>
+                  <img className="ui right spaced avatar image" src="https://thumbs.dreamstime.com/b/car-racer-flat-icon-man-red-uniform-orange-background-79711583.jpg"/>
+                  {user.username}</a>
+                {open ? 
+                <div>
+                  <Link to='/profile'>
+                    <button className="ui tiny green button">Profile</button>
                   </Link>
-                </>
-              </ul> : null}
-               
+                  <div>
+                    <Link to='/' >
+                      <button onClick={logout} className="ui tiny red button">Logout</button>
+                    </Link>
+                  </div>
+                </div> : null}
+              </div>
+              </div>
             </div>
-            <div>
-              <Link to='/friends'>
-                <button>Friends</button>
-              </Link>
-              <Link to='/tracks'>
-                <button>Tracks</button>
-              </Link>
-              <Link to='/favorite-tracks'>
-                <button>Favorite Tracks</button>
-              </Link>
-              <Link to='/find-tracks'>
-                <button>Find Tracks</button>
-              </Link>
+            <div className="ui container">
+              <div className="ui secondary menu centered horizontal">
+                <Link to='/friends'>
+                  <a className="item">Friends</a>
+                </Link>
+                <Link to='/tracks'>
+                  <a className="item">Tracks</a>
+                </Link>
+                <Link to='/favorite-tracks'>
+                  <a className="item">Favorite Tracks</a>
+                </Link>
+                <Link to='/find-tracks'>
+                  <a className="item">Find Tracks</a>
+                </Link>
+              </div>
             </div>
-          <Routes>
-              <Route path='/' element={<Main timescores={timeScoreArr} posts={posts} />} />
-              <Route path='/profile' element={<Profile user={user} cars={cars} setCars={setCars}/>} />
-              <Route path='/friends' element={<FriendsList />} />
-              <Route path='/tracks/*' element={<Tracks timescores={timeScoreArr} setTimeScoreArr={setTimeScoreArr} user={user} faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
-              <Route path='/favorite-tracks' element={<FavoriteTracks faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
-              <Route path='/find-tracks' element={<TracksNear track={data} />} />
-              {trackRoute}
-              {usersRoute}
-          </Routes>
+            <Routes>
+                <Route path='/' element={<Main timescores={timeScoreArr} posts={posts} />} />
+                <Route path='/profile' element={<Profile user={user} cars={cars} setCars={setCars}/>} />
+                <Route path='/friends' element={<FriendsList friendArr={friendArr}/>} />
+                <Route path='/tracks/*' element={<Tracks timescores={timeScoreArr} setTimeScoreArr={setTimeScoreArr} user={user} faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
+                <Route path='/favorite-tracks' element={<FavoriteTracks faveTracks={faveTracks} setFaveTracks={setFaveTracks} />} />
+                <Route path='/find-tracks' element={<TracksNear track={data} />} />
+                {trackRoute}
+                {usersRoute}
+            </Routes>
           </div>
   );
 }

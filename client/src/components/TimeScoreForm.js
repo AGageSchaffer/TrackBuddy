@@ -21,8 +21,20 @@ function TimeScoreForm({timeScoreFormData, setTimeScoreFormData, timeforms, setT
 
     return(
         <>
-            <label>Time: </label>
-            <p><input name='minute' value={timeforms.minute} type='number' onChange={(e) => handleTime(e)} min='0' max='99' ></input>:<input name='second' type='number' min='0' max='59' value={timeforms.second} onChange={(e) => handleTime(e)} ></input>.<input name='millisecond' type='number' value={timeforms.millisecond} onChange={(e) => handleTime(e)} max='999' min='0' ></input></p>
+            <div className="inline fields">
+                <label>Time: </label>
+                    <div className="six wide field">
+                        <input name='minute' value={timeforms.minute} type='number' onChange={(e) => handleTime(e)} min='0' max='99' ></input>
+                    </div>
+                <label>:</label>
+                    <div className="six wide field">
+                        <input name='second' type='number' min='0' max='59' value={timeforms.second} onChange={(e) => handleTime(e)} ></input>
+                    </div>
+                <label>.</label>
+                    <div className="six wide field">
+                        <input name='millisecond' type='number' value={timeforms.millisecond} onChange={(e) => handleTime(e)} max='999' min='0' ></input>
+                    </div>
+                </div>
             <label>Time of Day: </label>
             <input name='timeOfDay' value={timeScoreFormData.timeOfDay} onChange={(e) => handleChange(e)}></input>
             <label>Date: </label>

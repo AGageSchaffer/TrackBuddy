@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import AddCar from "./AddCar";
 import { Image } from "cloudinary-react";
+import UserProfile from "./UserProfile";
+import CarList from "./CarList";
 
-function Profile({user, cars, setCars}){
+function Profile({user, cars, setCars, loggedUser, friendArr, setFriendArr}){
     const [edit, setEdit] = useState(false)
     const [formView, setFormView] = useState(false)
     const initialForm = {
@@ -33,23 +35,31 @@ function Profile({user, cars, setCars}){
     }
 
     const carlist = cars.map((car) => {
-        return <ul key={car.id}>
-            <li><button onClick={() => deleteCar(car.id)}>x</button><button onClick={() => editCar(car)}>Edit</button><Image style={{width: 100}} cloudName='dltl186jg' publicId={car.photo_src} />{car.year} {car.make} {car.model} {car.trim} {car.transmission} - {car.mod_list}</li>
-        </ul>
+        return <CarList car={car} deleteCar={deleteCar} editCar={editCar} loggedUser={loggedUser} />
     })
 
     return(
-        <div>
-            <button>Edit Account</button>
-            <button>Delete Account</button>
-            <h3>Username: {user.username}</h3>
-            <h3>First Name: {user.firstName}</h3>
-            <h3>Last Name: {user.lastName}</h3>
-            <h3>email: {user.email}</h3>
-            <h3>Cars</h3>
-            {carlist ? carlist : null}
-            {edit ? null : formView ?  <button onClick={() => setFormView(!formView)}>Cancel</button> : <button onClick={() => {setFormView(!formView)}}>Add Car</button>}
+        <div className="ui grid">
+            <div className="two wide column"></div>
+            {loggedUser ? <div className="one wide column"></div> : <div className="one wide column">
+                <div className="ui vertical buttons">
+                    <button className="ui button">Edit Account</button>
+                    <button className="ui button">Delete Account</button>
+                </div>
+            </div>}
+            <div className="five wide column">
+            <div className="ui large center aligned header">Profile</div>
+                <UserProfile user={user} loggedUser={loggedUser} friendArr={friendArr} setFriendArr={setFriendArr} />
+            </div>
+            <div className="seven wide column">
+                    <div className="ui large center aligned header">Cars</div>
+                <div className="ui divided items">
+                    {carlist}
+            {loggedUser ? null : edit ? null : formView ?  <button className="ui button" onClick={() => setFormView(!formView)}>Close</button> : <button className="ui button" onClick={() => {setFormView(!formView)}}>Add Car</button>}
             {formView ? <AddCar edit={edit} setEdit={setEdit} initialForm={initialForm} formData={formData} setFormData={setFormData} cars={cars} setCars={setCars} setFormView={setFormView} /> : null}
+                </div>
+            </div>
+            <div className="one wide column"></div>
         </div>
     )
 }

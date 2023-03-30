@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import TimeScoreForm from "./TimeScoreForm"
 
 
-function PostForm({track, user, timescoreArr, setTimescoreArr, posts, setPosts}){
+function PostForm({track, user, timescoreArr, setTimescoreArr, posts, setPosts, setShowForm}){
     const initialForm = {
         user_id: user.id,
         racetrack_id: track.id,
@@ -85,14 +85,17 @@ function PostForm({track, user, timescoreArr, setTimescoreArr, posts, setPosts})
             }
         })
         setFormData(initialForm)
+        setShowForm(false)
     }
 
     return(
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="ui form">
+            <div className="field">
             <label>Body: </label>
             <input name='body' value={formData.body} onChange={(e) => handleChange(e)}></input>
-            {timeScoreForm ? <TimeScoreForm timeScoreFormData={timeScoreForm} setTimeScoreFormData={setTimeScoreForm} initialTimeScoreForm={initialTimeScoreForm} timeforms={timeforms} setTimeForm={setTimeForm} /> : <button onClick={() => {setTimeScoreForm(true); setTimeScoreForm(initialTimeScoreForm)}}>Add Timescore</button>}
-            <button type="submit">Submit</button>
+            </div>
+            {timeScoreForm ? <TimeScoreForm timeScoreFormData={timeScoreForm} setTimeScoreFormData={setTimeScoreForm} initialTimeScoreForm={initialTimeScoreForm} timeforms={timeforms} setTimeForm={setTimeForm} /> : <button onClick={() => {setTimeScoreForm(true); setTimeScoreForm(initialTimeScoreForm)}} className="ui button">Add Timescore</button>}
+            <button type="submit" className="ui button">Submit</button>
         </form>
     )
 }
